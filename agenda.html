@@ -5,16 +5,15 @@
   <link href="/stylesheets/main.css" rel="stylesheet" type="text/css" />
  </head>
  <body>
+ <h1>{{agenda_name}}</h1>
   <ul>
-   {% for agenda in agendas %}
-     <li>{{agenda.name}}</li>
+   {% for role in roles %}
+     <li>{{role.description}}</li>
    {% endfor %}
   </ul>
  
   <hr/>
   
-  <form action="/newagenda" method="post">
-    New Meeting: <input name="meeting" type="date" /><input type="submit" value="Create">
-  </form>
+  <a href="/">Back to meeting list</a>
   {% endautoescape %}</body>
 </html>
