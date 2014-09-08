@@ -30,6 +30,7 @@ class Agenda(ndb.Model):
 
     def addDefaultSpeaker(self):
         speaker = Role(parent=self.gen_key(self.name), description=roleinfo.speakerDescription, notes = roleinfo.speakerNotes, minutes = roleinfo.speakerMinutes, presenter = roleinfo.presenterName)
+        speaker.put()
 
     @staticmethod
     def gen_key(agendaName):
@@ -54,8 +55,6 @@ class NewAgenda(webapp2.RequestHandler):
 
     def post(self):
 
-        #import pdb; pdb.set_trace();
-
         dateAsListOfInts = [int(x) for x in self.request.get('meeting').split('-')]
         date = datetime.date(*dateAsListOfInts)
         
@@ -74,6 +73,8 @@ class DisplayAgenda(webapp2.RequestHandler):
     def get(self):
         agendaName = self.request.get('agenda_name')
         key = ndb.Key('Agenda', agendaName)
+
+        #import pdb; pdb.set_trace();
 
         roles_query = Role.query(
             ancestor=Agenda.gen_key(agendaName))
