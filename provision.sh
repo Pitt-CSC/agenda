@@ -6,6 +6,4 @@ sudo apt-get update
 sudo apt-get -y install unzip
 
 curl -O https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.10.zip
-gunzip google_appengine_1.9.10.zip
-export PATH=$PATH:~/google_appengine
-
+unzip google_appengine_1.9.10.zip
