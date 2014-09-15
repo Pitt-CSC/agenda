@@ -5,9 +5,10 @@
   <link href="/stylesheets/main.css" rel="stylesheet" type="text/css" />
  </head>
  <body>
+  <p>{{errorMessage}}</p>
   <ul>
    {% for agenda in agendas %}
-     <li>{{agenda.name}}</li>
+     <li><a href="/displayagenda?agenda_name={{agenda.name}}">{{agenda.name}}</a></li>
    {% endfor %}
   </ul>
  
