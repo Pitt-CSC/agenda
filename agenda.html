@@ -6,20 +6,21 @@
  </head>
  <body>
  <h1>{{agenda_name}}</h1>
-	 <ul>
+	 <table>
 	   {% for role in roles %}
-	     <li>
-	     	<form action="/edit?agenda_name={{agenda_name}};title={{role.title}}" method="post" >
-	     		<h2>{{role.title}}</h2>
-	     		<p>{{role.description}}</p>
-	     		<input type ="checkbox" name="isClaimed" {% if role.isClaimed %}checked{% endif %}> Claimed
-	     		<br>
-	     		<input >
-	     		<input type="submit" value="Submit">
-	     	<form>
-	     </li>
+	     <td>
+	     	<tr>
+		     	<form action="/edit?agenda_name={{agenda_name}};title={{role.title}}" method="post" >
+		     		<h2>{{role.title}}</h2>
+		     		<p>{{role.description}}</p>
+		     		<br>
+		     		Enter your name: <input value="{{role.presenter}}" name="presenter" rows="1" cols="40">
+		     		<input type="submit" value="Save Changes to This Role">
+		     	</form>
+		     </tr>
+	     </td>
 	   {% endfor %}
-	  </ul>
+	  </table>
  
   <hr/>
   

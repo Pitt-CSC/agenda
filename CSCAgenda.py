@@ -43,15 +43,25 @@ class Agenda(ndb.Model):
     date = ndb.DateProperty()
     name = ndb.StringProperty()
 
+    # Create a stackpointer role and attach it to this agenda
+    def addDefaultStackPointer(self):
+        stackpointer = Role(parent=Agenda.gen_key(self.name), 
+        description=roleinfo.stackpointerDescription,  
+        presenter = roleinfo.stackpointerName, 
+        isClaimed = False,
+        title = "Stack Pointer")
+        
+        stackpointer.put()
+
     # Create a speaker role and attach it to this agenda
-    def addDefaultSpeaker(self):
+    def addDefaultSpeaker(self, title="Speaker"):
         speaker = Role(parent=Agenda.gen_key(self.name), 
         description=roleinfo.speakerDescription, 
         notes = roleinfo.speakerNotes, 
         minutes = roleinfo.speakerMinutes, 
         presenter = roleinfo.presenterName, 
         isClaimed = False,
-        title = "Speaker")
+        title = title)
         
         speaker.put()
 
@@ -124,6 +134,7 @@ class NewAgenda(webapp2.RequestHandler):
         #Create, initialize, and store new agenda
         newAgenda = Agenda(key = Agenda.gen_key(agenda_name),date=date,name=agenda_name)
         newAgenda.addDefaultSpeaker()
+        newAgenda.addDefaultStackPointer()
         newAgenda.put()
 
         renderAgenda(agenda_name,self)
@@ -141,13 +152,15 @@ class EditAgenda(webapp2.RequestHandler):
 
     def post(self):
         #Grab the role we want to edit
+        #import pdb; pdb.set_trace();
         agenda_name = self.request.get('agenda_name')
         role_being_edited = self.request.get('title')
         query = Role.getAllRoles(agenda_name).filter(Role.title == role_being_edited)
 
         #Temporary janky loop. Should be identifying one unique role
         for role in query:
-            #Edit the role
+            role.presenter = self.request.get('presenter')
+            #Check if it is claimed
             claimed = self.request.get('isClaimed')
             if claimed == 'on':
                 role.isClaimed = True
